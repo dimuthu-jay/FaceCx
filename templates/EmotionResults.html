@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title> FaceCx - Emotion Results Screen</title>
+    <link rel="stylesheet" href="static/css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Flash Messages: Displays success or error messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }} flash-message-result">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <!-- Navigation Bar -->
+    {% include 'navbar.html' %}
+    </br>
+    <h1>Emotion Analysis</h1>
+    <h2>Emotion Distribution</h2>
+
+    <div id="chart-container">
+        <canvas id="emotionPieChart"></canvas>
+
+        <script>
+            var emotionPieCtx = document.getElementById('emotionPieChart').getContext('2d'); // Context for the pie chart
+
+            // Get the counts from the backend
+            var positiveCount = JSON.parse('{{ positive_count }}');
+            var negativeCount = JSON.parse('{{ negative_count }}');
+            var neutralCount = JSON.parse('{{ neutral_count }}');
+            var positivePercentage = JSON.parse('{{ positive_percentage }}');
+            var negativePercentage = JSON.parse('{{ negative_percentage }}');
+            var neutralPercentage = JSON.parse('{{ neutral_percentage }}');
+
+
+            var emotionCounts = {
+                positive: positiveCount,
+                negative: negativeCount,
+                neutral: neutralCount
+            };
+
+            var emotionPieChart = new Chart(emotionPieCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Positive', 'Negative', 'Neutral'],
+                    datasets: [{
+                        data: [emotionCounts.positive, emotionCounts.negative, emotionCounts.neutral],
+                        backgroundColor: ['rgba(0, 128, 0, 0.8)', 'rgba(255, 0, 0, 0.7)', 'rgba(128, 128, 128, 0.7)']
+                    }]
+                }
+            });
+        </script>
+    </div>
+
+<h2>Emotion Percentages</h2>
+<table>
+    <tr id="header-colour">
+        <th>Emotion</th>
+        <th>Percentage</th>
+    </tr>
+    <tr>
+        <td>Positive</td>
+        <td>{{ positive_percentage }}%</td>
+    </tr>
+    <tr>
+        <td>Negative</td>
+        <td>{{ negative_percentage }}%</td>
+    </tr>
+    <tr>
+        <td>Neutral</td>
+        <td>{{ neutral_percentage }}%</td>
+    </tr>
+    <tr>        
+        <td colspan="2"><b>Total Count: {{ total_count }}</b></td>
+    </tr>
+</table>
+
+<h2>Insights and Analysis</h2>
+<p>The emotion analysis provides valuable insights into the overall sentiment of the data. Here are some key takeaways:</p>
+<ul>
+    <strong>Positive Emotions:</strong> The data shows that {{ positive_percentage }}% of the emotions are positive, indicating a generally positive sentiment.<br>
+    <strong>Negative Emotions:</strong> {{ negative_percentage }}% of the emotions are negative, which could highlight areas of concern or dissatisfaction.<br>
+    <strong>Neutral Emotions:</strong> {{ neutral_percentage }}% of the emotions are neutral, suggesting a balanced or indifferent sentiment.<br>
+</ul>
+<p>Overall, the total count of analyzed emotions is {{ total_count }}. This distribution helps in understanding the general mood and can be used to make informed decisions or improvements.</p>
+
+<div class="button-container">
+    <button class="button back-button" onclick="history.back()"> Back</button>
+</div>
+
+</body>
+</html>

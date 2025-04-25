@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FaceCx - Result Screen</title>
+    <link rel="stylesheet" href="static/css/styles.css">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    {% include 'navbar.html' %}
+
+     <!-- Output Screen -->
+    <div id="outputScreen" class="screen active">
+        <div class="container">
+            <br><br><br><br><br>
+            <h2 class="text-color">FaceCx - Results</h2>
+
+            <!-- First Row (2 Buttons) -->
+            <div class="button-container">
+                <button class="button-one" onclick="location.href='/EmotionResults'">😊 Analyze Current Session Emotions</button>
+                <button class="button-one" onclick="location.href='/GenderResults'" >👤 Analyze Current Session Genders</button>
+            </div>
+
+            <!-- Second Row (2 Buttons) -->
+            <div class="button-container">
+                <button class="button-one"onclick="location.href='/MaleEmotionResults'">🧑‍ Analyze Current Session Male’s Emotion</button>
+                <button class="button-one"onclick="location.href='/FemaleEmotionResults'">👩‍🦰 Analyze Current Session Female’s Emotion</button>
+            </div>
+
+            <!-- Third Row (1 Button) -->
+            <div class="button-container single-button">
+                <button class="button-one" onclick="location.href='/AnalyticalAnalysis'">📊 Complete Analytical Analysis</button>
+            </div>
+
+            <!-- Last Row (Back Button Centered) -->
+            <div class="button-container-back">
+                <button class="button back-button" onclick="history.back()"> Back</button>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FaceCx - About Us Screen</title>
+    <link rel="stylesheet" href="static/css/styles.css">
+</head>
+<body>
+
+<!-- Navigation Bar -->
+{% include 'navbar.html' %}
+
+    <!-- About Screen -->
+    <div id="aboutScreen" class="screen active">
+        
+            <section class="grid-about">
+                <div>
+                  <h1 class="about"> About FaceCx </h1>
+                  <p class="about-content">FaceCx is an innovative AI-powered Customer Experience Feedback System that leverages facial expression analysis to provide real-time, data-driven insights. Traditional feedback methods, such as surveys, often suffer from low participation and response bias, making it difficult for businesses to understand genuine customer reactions.
+                  <br><br>With FaceCx, businesses can analyze customer emotions and engagement levels using advanced computer vision and machine learning algorithms. Our system ensures accurate and unbiased feedback, helping companies enhance customer satisfaction, improve marketing strategies, and optimize user experience.</p>
+                  <br><br>
+                  <button onclick="location.href='/contact'" class="button-custom">CONTACT US</button>
+                </div>
+                <img src="/static/img/about.png" alt="about" class="card-about">
+            </section>
+            <button class="button back-button" onclick="history.back()">Back</button>
+    </div>
+
+</body>
+</html>

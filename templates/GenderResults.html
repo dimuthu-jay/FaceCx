@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title> FaceCx - Gender Results Screen</title>
+    <link rel="stylesheet" href="static/css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+     <!-- Flash Messages: Displays success or error messages -->
+     {% with messages = get_flashed_messages(with_categories=true) %}
+     {% if messages %}
+         {% for category, message in messages %}
+             <div class="alert alert-{{ category }} flash-message-result">
+                 {{ message }}
+             </div>
+         {% endfor %}
+     {% endif %}
+     {% endwith %} 
+
+    <!-- Navigation Bar -->
+    {% include 'navbar.html' %}
+    </br>
+    <h1>Gender Analysis</h1>
+    <h2>Gender Distribution</h2>
+
+    <div id="chart-container">
+        <canvas id="genderPieChart"></canvas> <!-- New canvas for the pie chart -->
+
+        <script>
+            var genderPieCtx = document.getElementById('genderPieChart').getContext('2d'); // Context for the pie chart
+
+            // Get the counts from the backend
+            var maleCount = JSON.parse('{{ male_count }}');
+            var femaleCount = JSON.parse('{{ female_count }}');
+            var malePercentage = JSON.parse('{{ male_percentage }}');
+            var femalePercentage = JSON.parse('{{ female_percentage }}');
+
+            var genderCounts = {
+                male: maleCount,
+                female: femaleCount,
+            };
+
+            var genderPieChart = new Chart(genderPieCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Male', 'Female'],
+                    datasets: [{
+                        data: [genderCounts.male, genderCounts.female],
+                        backgroundColor: ['rgba(255, 206, 86, 0.6)', 'rgba(255, 99, 132, 0.6)'] 
+                    }]
+                }
+            });
+        </script>
+    </div>
+
+<h2>Gender Percentages</h2>
+<table>
+    <tr id="header-colour">
+        <th>Gender</th>
+        <th>Percentage</th>
+    </tr>
+    <tr>
+        <td>Male</td>
+        <td>{{ male_percentage }}%</td>
+    </tr>
+    <tr>
+        <td>Female</td>
+        <td>{{ female_percentage }}%</td>
+    </tr>
+    <tr>
+        <td colspan="2"><b>Total Count: {{ total_count }}</b></td>
+    </tr>
+</table>
+
+
+<h2>Insights and Analysis</h2>
+<p>The gender distribution data provides valuable insights into the demographics of the analyzed population. Here are some key points:</p>
+<ul>
+    <b>Male Percentage:</b> {{ male_percentage }}% - This indicates that {{ male_percentage }}% of the analyzed individuals are male.<br>
+    <b>Female Percentage:</b> {{ female_percentage }}% - This indicates that {{ female_percentage }}% of the analyzed individuals are female.<br>
+    <b>Total Count:</b> {{ total_count }} - The total number of individuals analyzed in this dataset.
+</ul>
+<p>Understanding the gender distribution can help in tailoring services, products, or content to better meet the needs of the target audience. It can also highlight any gender imbalances that may need to be addressed.</p>
+
+<div class="button-container">
+    <button class="button back-button" onclick="history.back()"> Back</button>
+</div>
+
+</body>
+</html>

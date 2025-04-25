@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title> FaceCx - Analytical Analysis Screen</title>
+    <link rel="stylesheet" href="static/css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+    <!-- Flash Messages: Displays success or error messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }} flash-message-result">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+<body>
+
+    <!-- Navigation Bar -->
+    {% include 'navbar.html' %}
+    </br>
+    <h1>Analytical Analysis</h1>
+    <h2>Emotion Over Time</h2>
+    <p>This chart shows the distribution of total positive, negative, and neutral emotions over time.</p>
+
+<!--------------------------Emotion Over Time----------------------- -->
+    <div id="chart-container">
+        <canvas id="myChart"></canvas>
+
+        <p>This categorization helps in analyzing data based on different times of the day.</p>
+
+        <ul>
+            <b>Morning:</b> 05:00 (inclusive) to 12:00 (exclusive)<br>
+            <b>Afternoon:</b> 12:00 (inclusive) to 17:00 (exclusive)<br>
+            <b>Evening:</b> 17:00 (inclusive) to 21:00 (exclusive)<br>
+            <b>Night:</b> 21:00 (inclusive) to 05:00 (exclusive)<br>
+        </ul>     
+
+    </div>
+
+<!-- ------------------------------ Heatmap ---------------------------- -->
+    <h2>Daily Emotion Intensity Heatmap</h2>
+    <p>This heatmap visualizes the total intensity of different emotions over time, aggregated on a daily basis.</p>
+    <div id="chart-container">
+        <canvas id="heatmap"></canvas>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: JSON.parse('{{ labels | tojson }}'),
+                    datasets: [
+                        {
+                            label: 'Positive',
+                            data: JSON.parse('{{ positive_values | tojson }}'),
+                            borderColor: 'green',
+                            fill: false
+                        },
+                        {
+                            label: 'Negative',
+                            data: JSON.parse('{{ negative_values | tojson }}'),
+                            borderColor: 'red',
+                            fill: false
+                        },
+                        {
+                            label: 'Neutral',
+                            data: JSON.parse('{{ neutral_values | tojson }}'),
+                            borderColor: 'blue',
+                            fill: false
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Date and Time of Day'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Count'
+                            }
+                        }
+                    }
+                }
+            });
+        });
+
+            var ctx = document.getElementById('heatmap').getContext('2d');
+            var heatmap = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: JSON.parse('{{ heatmap_labels | tojson }}'),
+                    datasets: JSON.parse('{{ heatmap_datasets | tojson }}')
+                },
+                options: {
+                    plugins: { legend: { display: true } },
+                    responsive: true,
+                    scales: { y: { stacked: true }, x: { stacked: true } }
+                }
+            });
+    </script>
+
+<!-- ---------------------------Total Emotion Results (pie chart)----------------------------------- -->
+<h2>Total Emotion and Gender Distribution </h2>
+<p>This chart shows the total distribution of emotions and genders in the analyzed data.</p>
+
+<div id="chart-container">
+    <div id="total-emotion-pie-chart">
+        <canvas id="totalemotionPieChart"></canvas> 
+
+            <script>
+                var emotionPieCtx = document.getElementById('totalemotionPieChart').getContext('2d'); // Context for the pie chart
+
+                // Get the counts from the backend
+                var positiveCount = JSON.parse('{{ positive_count}}');
+                var negativeCount = JSON.parse('{{ negative_count}}');
+                var neutralCount = JSON.parse('{{ neutral_count }}');
+
+                var emotionCounts = {
+                    positive: positiveCount,
+                    negative: negativeCount,
+                    neutral: neutralCount
+                };
+
+                var totalemotionPieChart = new Chart(emotionPieCtx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Positive', 'Negative', 'Neutral'],
+                        datasets: [{
+                            data: [emotionCounts.positive, emotionCounts.negative, emotionCounts.neutral],
+                            backgroundColor: ['rgba(0, 128, 0, 0.8)', 'rgba(255, 0, 0, 0.7)', 'rgba(128, 128, 128, 0.7)']
+                        }]
+                    }
+                });
+            </script>
+        <p>Total emotion distribution.</p>
+    </div>
+    
+<!-- ---------------------------Total gender pie chart ----------------------------------- -->
+    <div id="total-gender-pie-chart">
+        <canvas id="totalgenderPieChart"></canvas> <!-- New canvas for the pie chart -->
+
+            <script>
+                var genderPieCtx = document.getElementById('totalgenderPieChart').getContext('2d'); // Context for the pie chart
+
+                // Get the counts from the backend
+                var maleCount = JSON.parse('{{ male_count }}');
+                var femaleCount = JSON.parse('{{ female_count }}');
+
+                var genderCounts = {
+                    male: maleCount,
+                    female: femaleCount,
+                };
+
+                var totalgenderPieChart = new Chart(genderPieCtx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Male', 'Female'],
+                        datasets: [{
+                            data: [genderCounts.male, genderCounts.female],
+                            backgroundColor: ['#FFCE56', '#CD4494'] 
+                        }]
+                    }
+                });
+            </script>
+        <p>Total gender distribution.</p>
+    </div>
+    <h4>Total Count: {{ total_count }}</h4>
+</div>
+
+<!-- -----------------------------------total male emotion  (pie chart)----------------------------------- -->
+<h2>Total Emotion Distribution based on Gender</h2>
+<p>These graphs show the full distribution of emotions based on gender in the analyzed data.</p>
+
+<div id="chart-container">
+  <div id="total-emotion-pie-chart">
+
+    <canvas id="totalmaleEmotionPieChart"></canvas> <!-- New canvas for the pie chart -->
+
+    <script>
+        var maleEmotionPieCtx = document.getElementById('totalmaleEmotionPieChart').getContext('2d'); // Context for the pie chart
+
+        // Get the counts from the backend
+        var malePositiveCount = JSON.parse('{{ male_positive_count }}');
+        var maleNegativeCount = JSON.parse('{{ male_negative_count }}');
+        var maleNeutralCount = JSON.parse('{{ male_neutral_count }}');
+
+        var totalmaleEmotionCounts = {
+            positive: malePositiveCount,
+            negative: maleNegativeCount,
+            neutral: maleNeutralCount
+        };
+
+        var maleEmotionPieChart = new Chart(maleEmotionPieCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Positive', 'Negative', 'Neutral'],
+                datasets: [{
+                    data: [totalmaleEmotionCounts.positive, totalmaleEmotionCounts.negative, totalmaleEmotionCounts.neutral],
+                    backgroundColor: ['rgba(0, 128, 0, 0.8)', 'rgba(255, 0, 0, 0.7)', 'rgba(128, 128, 128, 0.7)']
+                }]
+            }
+        });
+    </script>
+    <p>Total male emotion distribution.</p>
+  </div>
+
+<!-- -----------------------------------total female emotion  (pie chart)----------------------------------- -->
+  <div id="total-gender-pie-chart">
+
+    <canvas id="totalfemaleEmotionPieChart"></canvas> <!-- New canvas for the pie chart -->
+
+    <script>
+        var femaleEmotionPieCtx = document.getElementById('totalfemaleEmotionPieChart').getContext('2d'); // Context for the pie chart
+
+        // Get the counts from the backend
+        var positiveCount = JSON.parse('{{ female_positive_count }}');
+        var negativeCount = JSON.parse('{{ female_negative_count }}');
+        var neutralCount = JSON.parse('{{ female_neutral_count }}');
+
+        var totalFemaleEmotionCounts = {
+            positive: positiveCount,
+            negative: negativeCount,
+            neutral: neutralCount
+        };
+
+        var totalfemaleEmotionPieChart = new Chart(femaleEmotionPieCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Positive', 'Negative', 'Neutral'],
+                datasets: [{
+                    data: [totalFemaleEmotionCounts.positive, totalFemaleEmotionCounts.negative, totalFemaleEmotionCounts.neutral],
+                    backgroundColor: ['rgba(0, 128, 0, 0.8)', 'rgba(255, 0, 0, 0.7)', 'rgba(128, 128, 128, 0.7)']
+                }]
+            }
+        });
+    </script>
+    <p>Total female emotion distribution.</p>
+  </div>
+
+</div>
+
+<div class="button-container">
+    <button class="button back-button" onclick="history.back()"> Back</button>
+</div>
+
+</body>
+</html>

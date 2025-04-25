@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FaceCx - User Account Screen</title>
+    <link rel="stylesheet" href="static/css/styles.css">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    {% include 'navbar.html' %}
+
+    <div class="user-account-screen">
+        <div class="user-profile-card">
+            <div class="profile-header">
+                <img src="static/img/user-blac.png" alt="User Profile" class="profile-image">
+                <br>
+                <h2 class="user-name">{{ current_user.name }}</h2>
+                <p class="user-email">{{ current_user.email }}</p>
+            </div>
+
+            <hr><br>
+
+            <div class="profile-details">
+                <strong>Full Name</strong> <p>{{ current_user.name }}</p>                                                                                                                  
+                <br><br><hr>
+                <strong>Email</strong> <p>{{ current_user.email }}</p>
+                <br><br><hr>
+                <strong>User ID</strong> <p>{{ current_user.id }}</p>
+                <br><br>   
+            </div>
+
+            <div class="profile-actions">
+                <a class="button-custom" href="{{ url_for('logout') }}">Logout</a>
+            </div>
+            
+        </div>
+
+    </div>
+    <button class="button back-button" onclick="history.back()">Back</button>
+
+</body>
+</html>

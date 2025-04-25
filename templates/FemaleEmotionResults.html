@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title> FaceCx - Female Emotion Results Screen</title>
+    <link rel="stylesheet" href="static/css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Flash Messages: Displays success or error messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }} flash-message-result">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <!-- Navigation Bar -->
+    {% include 'navbar.html' %}
+    </br>
+    <h1>Female Emotion Analysis</h1>
+    <h2>Female Emotion Distribution</h2>
+    
+    <div id="chart-container">
+        <canvas id="femaleEmotionPieChart"></canvas> <!-- New canvas for the pie chart -->
+
+        <script>
+            var femaleEmotionPieCtx = document.getElementById('femaleEmotionPieChart').getContext('2d'); // Context for the pie chart
+
+            // Get the counts from the backend
+            var positiveCount = JSON.parse('{{ female_positive_count }}');
+            var negativeCount = JSON.parse('{{ female_negative_count }}');
+            var neutralCount = JSON.parse('{{ female_neutral_count }}');
+            var positivePercentage = JSON.parse('{{ female_positive_percentage }}');
+            var negativePercentage = JSON.parse('{{ female_negative_percentage }}');
+            var neutralPercentage = JSON.parse('{{ female_neutral_percentage }}');
+
+            var femaleEmotionCounts = {
+                positive: positiveCount,
+                negative: negativeCount,
+                neutral: neutralCount
+            };
+
+            var femaleEmotionPieChart = new Chart(femaleEmotionPieCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Positive', 'Negative', 'Neutral'],
+                    datasets: [{
+                        data: [femaleEmotionCounts.positive, femaleEmotionCounts.negative, femaleEmotionCounts.neutral],
+                        backgroundColor: ['rgba(0, 128, 0, 0.8)', 'rgba(255, 0, 0, 0.7)', 'rgba(128, 128, 128, 0.7)']
+                    }]
+                }
+            });
+        </script>
+    </div>
+
+    <!-- Table of Female Emotion Percentages -->
+
+    <h2>Female Emotion Percentages</h2>
+    <table>
+        <tr id="header-colour">
+            <th>Emotion</th>
+            <th>Percentage</th>
+        </tr>
+        <tr>
+            <td>Positive</td>
+            <td>{{ female_positive_percentage }}%</td>
+        </tr>
+        <tr>
+            <td>Negative</td>
+            <td>{{ female_negative_percentage }}%</td>
+        </tr>
+        <tr>
+            <td>Neutral</td>
+            <td>{{ female_neutral_percentage }}%</td>
+        </tr>
+        <tr>        
+            <td colspan="2"><b>Total Female Count: {{ female_total_count }}</b></td>
+        </tr>
+    </table>
+
+    <h2>Insights and Analysis</h2>
+    <p>The pie chart and table above provide a visual representation and breakdown of the emotional responses of females. Here are some insights that can be derived from this data:</p>
+    <ul>
+        <b>Positive Emotions:</b> The percentage of positive emotions is {{ female_positive_percentage }}%. This includes emotions such as happiness and surprise, indicating the proportion of females who exhibited positive emotions.<br>
+        <b>Negative Emotions:</b> The percentage of negative emotions is {{ female_negative_percentage }}%. This includes emotions such as anger and sadness, showing the proportion of females who displayed negative emotions.<br>
+        <b>Neutral Emotions:</b> The percentage of neutral emotions is {{ female_neutral_percentage }}%. This includes emotions such as contempt, disgust, and fear, reflecting the proportion of females with neutral emotional responses.<br>
+        <b>Total Count:</b> The total number of female participants is {{ female_total_count }}. This gives an overall context to the percentages shown.
+    </ul>
+    <p>By analyzing these values, we can understand the emotional distribution among females and identify any significant trends or patterns. This information can be useful for further research, targeted interventions, or improving user experiences based on emotional feedback.</p>
+    <p>For instance, a higher percentage of positive emotions might suggest that the environment or content being analyzed is well-received by the female participants. Conversely, a higher percentage of negative emotions could indicate areas that need improvement or further investigation. Neutral emotions, while not as indicative of strong feelings, can still provide valuable insights into the overall emotional landscape.</p>
+    <p>Understanding these emotional responses can help in tailoring content, services, or products to better meet the needs and preferences of the target audience. It can also aid in developing strategies to enhance positive emotional experiences and mitigate negative ones.</p>
+
+
+    <div class="button-container">
+        <button class="button back-button" onclick="history.back()"> Back</button>
+    </div>
+
+</body>
+</html>

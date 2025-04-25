@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FaceCx - Customer Experience Analysis</title>
+    <link rel="stylesheet" href="static/css/styles.css">
+</head>
+<script>
+  // Auto-hide flash messages after 2 seconds
+  setTimeout(() => {
+      const flashMessages = document.querySelectorAll('.flash-message-home');
+      flashMessages.forEach(message => {
+          message.classList.add('hide');
+      });
+  }, 2000); // 2000ms = 2 seconds
+</script>
+<body>
+
+  <!-- Flash Messages: Displays success or error messages -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+      {% for category, message in messages %}
+          <div class="alert alert-{{ category }} flash-message-home">
+              {{ message }}
+          </div>
+      {% endfor %}
+  {% endif %}
+  {% endwith %}
+
+<div id="homeScreen" class="screen active">
+
+  <!--  navbar  -->
+  {% include 'navbar.html' %}
+    
+  <!-- Hero Section -->
+  <section class="text-center-custom">
+    <br>
+    <h1 class="heading-main">Customer Experience Feedback <span class="text-blu">Analysis</span></h1>
+    <p class="paragraph-custom">Enhance your customer feedback analysis with our AI-based tools.</p>
+    <button onclick="location.href='/capture'" class="button-custom">TO START</button>
+  </section>
+
+  <!-- Feedback Section -->
+  <section class="grid-custom">
+    <img src="/static/img/customer-experience copy.png" alt="Feedback" class="card-custom">
+    <div>
+      <h3 class="why"> Why <span class="why-text"> Feedback </span> Matter..?</h3>
+      <p class="why-content">Customer experience feedback is essential for businesses to thrive in today's competitive landscape. It provides valuable insights into how customers perceive products, services, and brand interactions.
+      <br><br>By understanding genuine emotions and opinions, businesses can make informed decisions to enhance satisfaction, build loyalty, and improve overall service quality. Effective feedback analysis not only helps identify pain points but also reveals opportunities for innovation, ensuring that every customer interaction leaves a positive impact.</p>
+      <p class="keywords"> Fast<span class="text-blue">.</span> Simple<span class="text-blue">.</span> Effective<span class="text-blue">.</span> </p>
+    </div>
+  </section>
+
+</div>
+
+  <!-- Footer -->
+  <footer class="Footer-style">
+    <p class="Footer-text">© 2025 Customer Experience Analysis. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>

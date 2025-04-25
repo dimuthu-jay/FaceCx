@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FaceCx - Data Capture Screen</title>
+    <link rel="stylesheet" href="static/css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+</head>
+<script>
+    // Auto-hide flash messages after 2 seconds
+    setTimeout(() => {
+        const flashMessages = document.querySelectorAll('.flash-message-home');
+        flashMessages.forEach(message => {
+            message.classList.add('hide');
+        });
+    }, 2000); 
+
+    // ------------------button state------------------
+    
+    // Check if video capture is already in progress
+    let isCapturing = false;
+
+    // Restore button state on page load
+    window.onload = () => {
+        const button = document.getElementById('toggleButton');
+        const savedState = localStorage.getItem('isCapturing');
+        if (savedState === 'true') {
+            isCapturing = true;
+            button.textContent = '⏹ Stop Video Capture';
+        } else {
+            isCapturing = false;
+            button.textContent = '📷 Start Video Capture';
+        }
+    };
+
+    function toggleVideoCapture() {
+        const button = document.getElementById('toggleButton');
+        if (isCapturing) {
+            // Stop video capture
+            location.href = '/stop';
+            button.textContent = '📷 Start Video Capture';
+            isCapturing = false;
+        } else {
+            // Start video capture
+            location.href = '/start_video';
+            button.textContent = '⏹ Stop Video Capture';
+            isCapturing = true;
+        }
+        // Save the state to localStorage
+        localStorage.setItem('isCapturing', isCapturing);
+    }
+</script>
+<body>
+  
+    <!-- Flash Messages: Displays success or error messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }} flash-message-home">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+<body>
+
+    <div id="particles-js"></div>
+
+    <!--  navbar  -->
+    {% include 'navbar.html' %}
+
+    <!-- Input Screen -->
+    <div id="inputScreen" class="screen active">
+        <div class="container">
+            <br><br><br><br><br><br>
+            <h2 class="text-color">Video Preview</h2>
+            <div class="video-box">
+            <img src="{{ url_for('video_feed') }}" width="605" height="450">
+            </div>
+       
+            <button id="toggleButton" class="button" onclick="toggleVideoCapture()">📷 Start Video Capture</button>
+
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
