@@ -21,6 +21,7 @@ Traditional feedback systems suffer from low response rates, biases, and limited
 
 ## 🗂️ Project Structure
 
+```text
 FaceCx/
 ├── model/
 │   ├── emotion.ipynb
@@ -56,31 +57,31 @@ FaceCx/
 ├── login-firebase-adminsdk.json
 ├── requirements.txt
 └── README.md
-
+```   
 ---
 
 ## ⚙️ How to Run
 
 ### 1️⃣ Installation
 
-git clone https://github.com/yourusername/FaceCx.git
+git clone https://github.com/dimuthuJayathuga/FaceCx.git
 cd FaceCx
 pip install -r requirements.txt
 
 ### 2️⃣ Create a Virtual Environment
 
-# Create venv (Linux/macOS)
+-Create venv (Linux/macOS)
 python3 -m venv venv
 
-# On Windows
+-On Windows
 python -m venv venv
 
 ### 3️⃣ Activate the Environment
 
-# On macOS/Linux
+-On macOS/Linux
 source venv/bin/activate
 
-# On Windows
+-On Windows
 venv\Scripts\activate
 
 ### 4️⃣ Install Dependencies
