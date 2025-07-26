@@ -61,38 +61,38 @@ FaceCx/
 ---
 
 ## ⚙️ How to Run
-
-### 1️⃣ Installation
+```text
+1️⃣ Installation
 
 git clone https://github.com/dimuthuJayathuga/FaceCx.git
 cd FaceCx
 pip install -r requirements.txt
 
-### 2️⃣ Create a Virtual Environment
+2️⃣ Create a Virtual Environment
 
 -Create venv (Linux/macOS)
-python3 -m venv venv
+  python3 -m venv venv
 
 -On Windows
-python -m venv venv
+  python -m venv venv
 
-### 3️⃣ Activate the Environment
+3️⃣ Activate the Environment
 
 -On macOS/Linux
-source venv/bin/activate
+  source venv/bin/activate
 
 -On Windows
-venv\Scripts\activate
+  venv\Scripts\activate
 
-### 4️⃣ Install Dependencies
+4️⃣ Install Dependencies
 
 pip install -r requirements.txt
 
-### 5️⃣ Run Real-Time Feedback System
+5️⃣ Run Real-Time Feedback System
 
 python app.py
 
-
+```  
 ---
 
 ## 📈 Model Performance
