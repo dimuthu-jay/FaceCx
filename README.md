@@ -116,7 +116,7 @@ python app.py
 **Dimuthu Jayathunga**  
 BEng (Hons) Software Engineering – University of Westminster  
 📧 Email: dimuthuchanaka06@gmail.com  
-🔗 GitHub: ([github.com/dimuthuJayathunga](https://github.com/dimuthuJayathunga))
+🔗 GitHub: ([github.com/dimuthu-jay](https://github.com/dimuthu-jay))
 
 ---
 
